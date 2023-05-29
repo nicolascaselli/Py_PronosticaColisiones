@@ -37,3 +37,45 @@ def insert_record(table, values):
             print("Error al insertar el registro:", error)
     else:
         print("Error al establecer la conexión con la base de datos.")
+
+def extraeDatosEntrenamiento():
+    # Establecer la conexión con la base de datos
+    conn = create_connection()
+
+    # Crear un cursor para ejecutar la consulta
+    cursor = conn.cursor()
+
+    # Ejecutar el procedimiento almacenado
+    cursor.callproc("extraeDatosEntrenamiento")
+
+    # Obtener el resultado del procedimiento almacenado
+    resultado = cursor.fetchall()
+
+    # Cerrar el cursor y la conexión
+    cursor.close()
+    conn.close()
+
+    # Separar las columnas en listas
+    X_Train = [fila[:14] for fila in resultado]
+    Y_Train = [fila[14] for fila in resultado]
+
+    return X_Train, Y_Train
+
+def extraeDatosPronostico():
+    # Establecer la conexión con la base de datos
+    conn = create_connection()
+
+    # Crear un cursor para ejecutar la consulta
+    cursor = conn.cursor()
+
+    # Ejecutar el procedimiento almacenado
+    cursor.callproc("extraeDatosPronostico")
+
+    # Obtener el resultado del procedimiento almacenado
+    X_Test = cursor.fetchall()
+
+    # Cerrar el cursor y la conexión
+    cursor.close()
+    conn.close()
+
+    return X_Test
