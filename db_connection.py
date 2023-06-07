@@ -1,19 +1,22 @@
+import configparser
 import psycopg2
 import json
+import os
 from logger import setup_logger
 
 logger = setup_logger("AlertaColisionesAeropuerto")
 def create_connection():
     try:
-        with open('config/db_config.json') as config_file:
-            config = json.load(config_file)
+        # Carga de la configuración
+        config = configparser.ConfigParser()
+        config.read(os.path.join('config','config.ini'))
 
         connection = psycopg2.connect(
-            database=config['database'],
-            user=config['user'],
-            password=config['password'],
-            host=config['host'],
-            port=config['port']
+            database=config.get('BD','database'),
+            user=config.get('BD','user'),
+            password=config.get('BD','password'),
+            host=config.get('BD','host'),
+            port=config.get('BD','port')
         )
         return connection
     except (Exception, psycopg2.Error) as error:

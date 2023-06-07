@@ -1,4 +1,6 @@
 from logger import setup_logger
+from componenteIA import *
+import db_query as dbq
 from db_query import execute_query
 
 
@@ -15,14 +17,17 @@ if __name__ == '__main__':
     '''
     logger.debug('Iniciando sistema de pronóstico de alertas')
 
-    query = "SELECT * FROM dbsds.parametro"
-    result = execute_query(query)
+    # Ejecutar el módulo
+    # run()
 
-    if result:
-        for row in result:
-            print(row)
-    else:
-        print("error al ejecutar la consulta.")
+    # Ejemplo de uso
+    #X_train, Y_train = dbq.extraeDatosPronostico()  # Datos de salida para entrenamiento (etiquetas)
+    #print(f"Datos de entrenamiento:\n {X_train}")
+    #print(f"Etiquetas de entrenamiento:\n {Y_train}")
+    componenteIA = Pronosticador()
+    componenteIA.run()
+    # Llamada a la función de aprendizaje incremental
+    # aprendizaje_incremental(X_train, Y_train, ruta_modelo)
 
     logger.debug('Finalizando sistema de pronóstico de alertas')
 
