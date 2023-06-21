@@ -1,5 +1,6 @@
 from logger import setup_logger
 from componenteIA import *
+import threading
 import db_query as dbq
 from db_query import execute_query
 
@@ -25,7 +26,31 @@ if __name__ == '__main__':
     #print(f"Datos de entrenamiento:\n {X_train}")
     #print(f"Etiquetas de entrenamiento:\n {Y_train}")
     componenteIA = Pronosticador()
-    componenteIA.run()
+    '''
+    componenteIA.guardar_modeloCNN(componenteIA.crear_nuevo_modeloCNN(), 'model/modeloPronosticoColisiones.h5')
+    componenteIA.evaluarModeloDatosPruebasCNN()
+    '''
+
+    # Crear los hilos
+    hilo1 = threading.Thread(target=componenteIA.calculapronosticoSVM())
+    hilo2 = threading.Thread(target=componenteIA.evaluarModeloDatosPruebasCNN())
+    # Iniciar los hilos
+    hilo1.start()
+    hilo2.start()
+
+    # Esperar a que los hilos terminen su ejecución
+    hilo1.join()
+    hilo2.join()
+
+
+    print("Todos los hilos han terminado")
+    '''
+    #componenteIA.guardar_modeloCNN(componenteIA.crear_nuevo_modeloCNN(), 'model/modeloPronosticoColisiones.h5')
+    #componenteIA.evaluarModeloDatosPruebasCNN()
+    #componenteIA.run()
+    '''
+
+    #componenteIA.run()
     # Llamada a la función de aprendizaje incremental
     # aprendizaje_incremental(X_train, Y_train, ruta_modelo)
 
